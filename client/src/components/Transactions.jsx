@@ -29,7 +29,7 @@ export default function Transactions() {
   note: ''
 })
 
-  const isIncome = formData.type === 'Income'
+  const isIncome = formData.type === 'income'
 
   // State to track which transaction ID is currently being edited inline
   const [editingId, setEditingId] = useState(null)
