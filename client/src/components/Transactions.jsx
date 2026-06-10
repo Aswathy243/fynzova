@@ -21,13 +21,13 @@ export default function Transactions() {
   const [loading, setLoading] = useState(true)
 
   // Form State for creating a new transaction
-  const [formData, setFormData] = useState({
-    type: 'Expense',
-    amount: '',
-    date: new Date().toISOString().split('T')[0],
-    category: 'Food & Dining',
-    note: ''
-  })
+ const [formData, setFormData] = useState({
+  type: 'expense',  // lowercase
+  amount: '',
+  date: new Date().toISOString().split('T')[0],
+  category: 'Food & Dining',
+  note: ''
+})
 
   const isIncome = formData.type === 'Income'
 
@@ -46,18 +46,15 @@ export default function Transactions() {
 
   // ─── 1. Fetch Transactions on Mount ───
   const fetchTransactions = async () => {
-    try {
-      const res = await api.get('/transactions')
-      if (res.ok) {
-        const data = res.data
-        setTransactions(data)
-      }
-    } catch (err) {
-      console.error('Error fetching transactions:', err)
-    } finally {
-      setLoading(false)
-    }
+  try {
+    const res = await api.get('/transactions')
+    setTransactions(res.data)
+  } catch (err) {
+    console.error('Error fetching transactions:', err)
+  } finally {
+    setLoading(false)
   }
+}
 
   useEffect(() => {
     fetchTransactions()
@@ -302,7 +299,7 @@ const handleSubmit = async (e) => {
               {['Income', 'Expense'].map(t => (
                 <button
                   key={t} type="button"
-                  onClick={() => setFormData({ ...formData, type: t, category: t === 'Income' ? '' : 'Food & Dining' })}
+                  onClick={() => setFormData({ ...formData, type: t.toLowerCase(), category: t === 'Income' ? '' : 'Food & Dining' })}
                   style={{
                     flex: 1, padding: '12px', borderRadius: '10px', border: 'none', cursor: 'pointer', fontWeight: '700', fontSize: '13px',
                     background: formData.type === t ? (t === 'Income' ? '#10b981' : '#ef4444') : '#334155',
