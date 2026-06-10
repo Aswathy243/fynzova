@@ -49,7 +49,7 @@ export default function Transactions() {
     try {
       const res = await api.get('/transactions')
       if (res.ok) {
-        const data = await res.json()
+        const data = res.data
         setTransactions(data)
       }
     } catch (err) {
