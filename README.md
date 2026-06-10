@@ -1,8 +1,8 @@
-# 💰 MONEYMINT — Personal Finance Tracker
+# 💰 FYNZOVA — Personal Finance Tracker
 
 A full stack web application to track daily income and expenses, visualize spending patterns, and download monthly financial reports.
 
-**Live Demo:** [moneymint-rho.vercel.app](https://moneymint-rho.vercel.app)
+**Live Demo:**(https://fynzova-rho.vercel.app/)
 
 > Note: The backend is hosted on Render's free tier. First load may take 30–60 seconds to wake up.
 
