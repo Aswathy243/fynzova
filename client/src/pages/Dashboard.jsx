@@ -47,27 +47,21 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true)
 
   // ─── 1. Fetch Transactions from Backend ───
-  useEffect(() => {
-    const fetchTransactions = async () => {
-      setLoading(true)
-      try {
-        // Retrieve JWT token from localStorage or your custom authStore token reference
-        const token = localStorage.getItem('token') 
-        
-        const res = await api.get('/transactions')
-        if (res.ok) {
-          const data = await res.json()
-          setTransactions(data)
-        }
-      } catch (err) {
-        console.error('Error connecting to transaction api:', err)
-      } finally {
-        setLoading(false)
-      }
+useEffect(() => {
+  const fetchTransactions = async () => {
+    setLoading(true)
+    try {
+      const res = await api.get('/transactions')
+      setTransactions(res.data)
+    } catch (err) {
+      console.error('Error connecting to transaction api:', err)
+    } finally {
+      setLoading(false)
     }
+  }
 
-    fetchTransactions()
-  }, [])
+  fetchTransactions()
+}, [])
 
   // ─── 2. Filter & Process Calculations Dynamically ───
   

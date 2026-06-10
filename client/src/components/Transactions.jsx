@@ -81,21 +81,16 @@ const handleSubmit = async (e) => {
 
   // ─── 3. Delete Transaction (DELETE) ───
   const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to permanently delete this transaction?')) return
+  if (!window.confirm('Are you sure you want to permanently delete this transaction?')) return
 
-    try {
-      const res = await api.put(`/transactions/${id}`, formData)
-
-      if (res.ok) {
-        // Remove item from frontend local state array instantly
-        setTransactions(transactions.filter(t => t._id !== id))
-      } else {
-        alert('Could not process ledger erasure request.')
-      }
-    } catch (err) {
-      console.error('Error deleting entry:', err)
-    }
+  try {
+    await api.delete(`/transactions/${id}`)
+    setTransactions(transactions.filter(t => t._id !== id))
+  } catch (err) {
+    console.error('Error deleting entry:', err)
+    alert('Could not delete transaction.')
   }
+}
 
   // ─── 4. Initialize Inline Update Mode ───
   const startEdit = (t) => {
@@ -111,23 +106,17 @@ const handleSubmit = async (e) => {
 
   // ─── 5. Save Updated Transaction (PUT) ───
   const handleUpdateSubmit = async (id) => {
-    if (!editFormData.amount || Number(editFormData.amount) <= 0) return alert('Enter a valid amount')
+  if (!editFormData.amount || Number(editFormData.amount) <= 0) return alert('Enter a valid amount')
 
-    try {
-      const res = await api.delete(`/transactions/${id}`)
-
-      if (res.ok) {
-        const updatedTx = await res.json()
-        // Map item to inject the new modified properties directly inside the array state
-        setTransactions(transactions.map(t => t._id === id ? updatedTx : t))
-        setEditingId(null) // Exit edit window mode
-      } else {
-        alert('Failed to apply modification changes.')
-      }
-    } catch (err) {
-      console.error('Error patching record profile:', err)
-    }
+  try {
+    const res = await api.put(`/transactions/${id}`, editFormData)
+    setTransactions(transactions.map(t => t._id === id ? res.data : t))
+    setEditingId(null)
+  } catch (err) {
+    console.error('Error updating transaction:', err)
+    alert('Failed to apply modification changes.')
   }
+}
 
   // ─── 6. Generate & Print PDF Report ───
   const generatePDF = () => {
