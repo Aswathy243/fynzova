@@ -1,3 +1,4 @@
+import api from '../utils/api'
 import { useState, useEffect } from 'react'
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -53,13 +54,7 @@ export default function Dashboard() {
         // Retrieve JWT token from localStorage or your custom authStore token reference
         const token = localStorage.getItem('token') 
         
-        const res = await fetch('http://localhost:5000/api/transactions', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          }
-        })
+        const res = await api.get('/transactions')
         if (res.ok) {
           const data = await res.json()
           setTransactions(data)

@@ -1,3 +1,4 @@
+import api from '../utils/api'
 import { useState, useEffect } from 'react'
 
 const EXPENSE_CATEGORIES = ['Food & Dining', 'Transport', 'Shopping', 'Bills', 'Health', 'Entertainment', 'Education', 'Others']
@@ -46,9 +47,7 @@ export default function Transactions() {
   // ─── 1. Fetch Transactions on Mount ───
   const fetchTransactions = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/transactions', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      })
+      const res = await api.get('/transactions')
       if (res.ok) {
         const data = await res.json()
         setTransactions(data)
@@ -70,18 +69,8 @@ export default function Transactions() {
     if (!formData.amount || Number(formData.amount) <= 0) return alert('Enter a valid amount')
 
     try {
-      const res = await fetch('http://localhost:5000/api/transactions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          ...formData,
-          amount: Number(formData.amount),
-          category: formData.type === 'Income' ? 'Income' : formData.category
-        })
-      })
+      
+      const res = await api.post('/transactions', formData)
 
       if (res.ok) {
         const newTx = await res.json()
@@ -100,10 +89,7 @@ export default function Transactions() {
     if (!window.confirm('Are you sure you want to permanently delete this transaction?')) return
 
     try {
-      const res = await fetch(`http://localhost:5000/api/transactions/${id}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
-      })
+      const res = await api.put(`/transactions/${id}`, formData)
 
       if (res.ok) {
         // Remove item from frontend local state array instantly
@@ -133,18 +119,7 @@ export default function Transactions() {
     if (!editFormData.amount || Number(editFormData.amount) <= 0) return alert('Enter a valid amount')
 
     try {
-      const res = await fetch(`http://localhost:5000/api/transactions/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          ...editFormData,
-          amount: Number(editFormData.amount),
-          category: editFormData.type === 'Income' ? 'Income' : editFormData.category
-        })
-      })
+      const res = await api.delete(`/transactions/${id}`)
 
       if (res.ok) {
         const updatedTx = await res.json()
