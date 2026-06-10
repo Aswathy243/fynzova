@@ -10,12 +10,16 @@ connectDB()
 const app = express()
 
 app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'https://moneymint-rho.vercel.app',
-    'https://moneymint-git-main-moneymint.vercel.app',
-    'https://moneymint.vercel.app'
-  ],
+  origin: function(origin, callback) {
+    if (!origin) return callback(null, true)
+    if (
+      origin.includes('vercel.app') ||
+      origin.includes('localhost')
+    ) {
+      return callback(null, true)
+    }
+    callback(new Error('Not allowed by CORS'))
+  },
   credentials: true
 }))
 app.use(express.json())
