@@ -158,7 +158,7 @@ useEffect(() => {
   return (
     <div>
       {/* ── Filter Controls ── */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 16, marginBottom: 28 }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 28, rowGap: 12 }}>
         <div style={{ display: 'flex', background: '#334155', borderRadius: 10, padding: 4, gap: 4 }}>
           {['monthly', 'yearly'].map(v => (
             <button
@@ -175,7 +175,7 @@ useEffect(() => {
           ))}
         </div>
 
-        <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
           {view === 'monthly' && (
             <select value={selectedMonth} onChange={e => setSelectedMonth(Number(e.target.value))} style={selectStyle}>
               {months.map((m, i) => <option key={i} value={i + 1}>{m}</option>)}
@@ -200,7 +200,7 @@ useEffect(() => {
       </div>
 
       {/* ── Charts Row ── */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: 20, marginBottom: 20 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 20, marginBottom: 20 }}>
         
         {/* Bar Chart */}
         <div style={cardStyle}>

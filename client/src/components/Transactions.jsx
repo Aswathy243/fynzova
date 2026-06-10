@@ -227,7 +227,7 @@ const handleSubmit = async (e) => {
     {/* ── Download Report Modal ── */}
     {showReportModal && (
       <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 16, padding: '28px 32px', width: 380, boxShadow: '0 20px 60px rgba(0,0,0,0.4)' }}>
+        <div style={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 16, padding: '24px', width: '90%', maxWidth: 400, boxShadow: '0 20px 60px rgba(0,0,0,0.4)' }}>
           <h3 style={{ color: '#fff', fontSize: 16, fontWeight: 700, margin: '0 0 20px' }}>📄 Download Report</h3>
 
           {/* Report type toggle */}
@@ -285,7 +285,7 @@ const handleSubmit = async (e) => {
       </button>
     </div>
 
-    <div style={{ display: 'grid', gridTemplateColumns: '400px 1fr', gap: '32px' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px' }}>
       
       {/* ── Left Side: Create Entry Card ── */}
       <div style={darkCardStyle}>
@@ -363,7 +363,7 @@ const handleSubmit = async (e) => {
                 {isEditing ? (
                   /* Inline Edit Mode Layout Window */
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%' }}>
-                    <div style={{ display: 'grid', gridTemplateColumns: editFormData.type === 'Income' ? '120px 1fr 150px' : '120px 1fr 150px 150px', gap: '10px' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '10px' }}>
                       <select style={inlineInputStyle} value={editFormData.type} onChange={e => setEditFormData({ ...editFormData, type: e.target.value, category: e.target.value === 'Income' ? '' : (editFormData.category || 'Food & Dining') })}>
                         <option value="Income">Income</option>
                         <option value="Expense">Expense</option>
