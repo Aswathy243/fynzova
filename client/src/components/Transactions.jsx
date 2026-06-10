@@ -1,4 +1,3 @@
-
 import api from '../utils/api'
 import { useState, useEffect } from 'react'
 
@@ -114,11 +113,7 @@ export default function Transactions() {
   }
 
   // Generate & Print PDF Report
- // Import html2pdf at the top of your file if using ES modules:
-// import html2pdf from 'html2pdf.js'
-// Alternatively, you can dynamically require it inside the function to avoid SSR issues:
-
-const generatePDF = () => {
+ const generatePDF = () => {
   const filtered = transactions.filter(t => {
     const { year, month } = parseLocalDate(t.date)
     if (reportType === 'monthly') return year === reportYear && month === reportMonth
@@ -149,26 +144,26 @@ const generatePDF = () => {
     ? filtered.sort((a, b) => parseLocalDate(a.date).day - parseLocalDate(b.date).day).map(t => {
         const { day } = parseLocalDate(t.date)
         return `<tr>
-          <td>${day} ${SHORT_MONTHS[reportMonth - 1]}</td>
-          <td>${isIncomeTx(t) ? 'Income' : t.category}</td>
-          <td style="font-style:italic;color:#64748b">${t.note || '—'}</td>
-          <td style="color:${isIncomeTx(t) ? '#16a34a' : '#dc2626'};font-weight:600">${t.type}</td>
-          <td style="color:${isIncomeTx(t) ? '#16a34a' : '#dc2626'};font-weight:700">${isIncomeTx(t) ? '+' : '-'} ${fmt(t.amount)}</td>
+          <td style="padding: 10px 14px; border-bottom: 1px solid #f1f5f9;">${day} ${SHORT_MONTHS[reportMonth - 1]}</td>
+          <td style="padding: 10px 14px; border-bottom: 1px solid #f1f5f9;">${isIncomeTx(t) ? 'Income' : t.category}</td>
+          <td style="padding: 10px 14px; border-bottom: 1px solid #f1f5f9; font-style:italic;color:#64748b">${t.note || '—'}</td>
+          <td style="padding: 10px 14px; border-bottom: 1px solid #f1f5f9; color:${isIncomeTx(t) ? '#16a34a' : '#dc2626'};font-weight:600">${t.type}</td>
+          <td style="padding: 10px 14px; border-bottom: 1px solid #f1f5f9; color:${isIncomeTx(t) ? '#16a34a' : '#dc2626'};font-weight:700">${isIncomeTx(t) ? '+' : '-'} ${fmt(t.amount)}</td>
         </tr>`
       }).join('')
     : buildYearlyRows().map(r => `<tr>
-        <td>${r.month} ${reportYear}</td>
-        <td style="color:#16a34a;font-weight:600">${fmt(r.income)}</td>
-        <td style="color:#dc2626;font-weight:600">${fmt(r.expense)}</td>
-        <td style="color:${r.net >= 0 ? '#2563eb' : '#ea580c'};font-weight:700">${fmt(r.net)}</td>
+        <td style="padding: 10px 14px; border-bottom: 1px solid #f1f5f9;">${r.month} ${reportYear}</td>
+        <td style="padding: 10px 14px; border-bottom: 1px solid #f1f5f9; color:#16a34a;font-weight:600">${fmt(r.income)}</td>
+        <td style="padding: 10px 14px; border-bottom: 1px solid #f1f5f9; color:#dc2626;font-weight:600">${fmt(r.expense)}</td>
+        <td style="padding: 10px 14px; border-bottom: 1px solid #f1f5f9; color:${r.net >= 0 ? '#2563eb' : '#ea580c'};font-weight:700">${fmt(r.net)}</td>
       </tr>`).join('')
 
   const headers = reportType === 'monthly'
-    ? '<tr><th>Date</th><th>Category</th><th>Note</th><th>Type</th><th>Amount</th></tr>'
-    : '<tr><th>Month</th><th>Income</th><th>Expense</th><th>Net</th></tr>'
+    ? '<tr><th style="padding:10px 14px; text-align:left; color:#64748b; font-weight:600; border-bottom:2px solid #e2e8f0;">Date</th><th style="padding:10px 14px; text-align:left; color:#64748b; font-weight:600; border-bottom:2px solid #e2e8f0;">Category</th><th style="padding:10px 14px; text-align:left; color:#64748b; font-weight:600; border-bottom:2px solid #e2e8f0;">Note</th><th style="padding:10px 14px; text-align:left; color:#64748b; font-weight:600; border-bottom:2px solid #e2e8f0;">Type</th><th style="padding:10px 14px; text-align:left; color:#64748b; font-weight:600; border-bottom:2px solid #e2e8f0;">Amount</th></tr>'
+    : '<tr><th style="padding:10px 14px; text-align:left; color:#64748b; font-weight:600; border-bottom:2px solid #e2e8f0;">Month</th><th style="padding:10px 14px; text-align:left; color:#64748b; font-weight:600; border-bottom:2px solid #e2e8f0;">Income</th><th style="padding:10px 14px; text-align:left; color:#64748b; font-weight:600; border-bottom:2px solid #e2e8f0;">Expense</th><th style="padding:10px 14px; text-align:left; color:#64748b; font-weight:600; border-bottom:2px solid #e2e8f0;">Net</th></tr>'
 
-  // Create an isolated temporary element to hold your report HTML
   const element = document.createElement('div');
+  element.style.width = '650px'; // Keeps standard rendering widths safe inside canvas converters
   element.innerHTML = `
     <div style="font-family: 'Segoe UI', sans-serif; color: #1e293b; padding: 30px; background: #fff;">
       <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; padding-bottom: 20px; border-bottom: 2px solid #e2e8f0;">
@@ -182,9 +177,9 @@ const generatePDF = () => {
         </div>
       </div>
       <div style="display: flex; gap: 16px; margin-bottom: 28px;">
-        <div style="flex: 1; padding: 16px; border-radius: 10px; border: 1px solid #e2e8f0; border-left: 4px solid #22c55e;"><p style="font-size: 11px; color: #94a3b8; text-transform: uppercase; margin-bottom: 6px;">Total Income</p><h3 style="color: #16a34a; font-size: 20px; font-weight: 800;">${fmt(totalIncome)}</h3></div>
-        <div style="flex: 1; padding: 16px; border-radius: 10px; border: 1px solid #e2e8f0; border-left: 4px solid #ef4444;"><p style="font-size: 11px; color: #94a3b8; text-transform: uppercase; margin-bottom: 6px;">Total Expense</p><h3 style="color: #dc2626; font-size: 20px; font-weight: 800;">${fmt(totalExpense)}</h3></div>
-        <div style="flex: 1; padding: 16px; border-radius: 10px; border: 1px solid #e2e8f0; border-left: 4px solid #3b82f6;"><p style="font-size: 11px; color: #94a3b8; text-transform: uppercase; margin-bottom: 6px;">Balance</p><h3 style="color: ${balance >= 0 ? '#2563eb' : '#ea580c'}; font-size: 20px; font-weight: 800;">${fmt(balance)}</h3></div>
+        <div style="flex: 1; padding: 14px; border-radius: 10px; border: 1px solid #e2e8f0; border-left: 4px solid #22c55e;"><p style="font-size: 11px; color: #94a3b8; text-transform: uppercase; margin-bottom: 6px; margin-top:0;">Total Income</p><h3 style="color: #16a34a; font-size: 18px; font-weight: 800; margin:0;">${fmt(totalIncome)}</h3></div>
+        <div style="flex: 1; padding: 14px; border-radius: 10px; border: 1px solid #e2e8f0; border-left: 4px solid #ef4444;"><p style="font-size: 11px; color: #94a3b8; text-transform: uppercase; margin-bottom: 6px; margin-top:0;">Total Expense</p><h3 style="color: #dc2626; font-size: 18px; font-weight: 800; margin:0;">${fmt(totalExpense)}</h3></div>
+        <div style="flex: 1; padding: 14px; border-radius: 10px; border: 1px solid #e2e8f0; border-left: 4px solid #3b82f6;"><p style="font-size: 11px; color: #94a3b8; text-transform: uppercase; margin-bottom: 6px; margin-top:0;">Balance</p><h3 style="color: ${balance >= 0 ? '#2563eb' : '#ea580c'}; font-size: 18px; font-weight: 800; margin:0;">${fmt(balance)}</h3></div>
       </div>
       <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
         <thead><tr style="background: #f8fafc;">${headers}</tr></thead>
@@ -195,27 +190,39 @@ const generatePDF = () => {
     </div>
   `;
 
-  // html2pdf options configuration
   const opt = {
     margin:       10,
     filename:     `MONEYMINT-Report-${periodLabel}.pdf`,
     image:        { type: 'jpeg', quality: 0.98 },
-    html2canvas:  { scale: 2, useCORS: true },
+    html2canvas:  { scale: 2, logging: false, useCORS: true },
     jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
   };
 
-  // Run the library execution method (Works smoothly on iOS, Android, and Web)
+  // Safe manual extraction via data URLs (Completely prevents native mobile layout loops)
   import('html2pdf.js').then((html2pdfModule) => {
     const html2pdf = html2pdfModule.default;
-    html2pdf().from(element).set(opt).save().then(() => {
+    
+    html2pdf().from(element).set(opt).outputPdf('blob').then((pdfBlob) => {
+      const blobUrl = URL.createObjectURL(pdfBlob);
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = `MONEYMINT-Report-${periodLabel}.pdf`;
+      
+      document.body.appendChild(link);
+      link.click();
+      
+      // Clean up DOM and memory space allocations
+      document.body.removeChild(link);
+      URL.revokeObjectURL(blobUrl);
       setShowReportModal(false);
+    }).catch(err => {
+      console.error("Blob stream generation failed", err);
+      alert("Error outputting layout data link.");
     });
   }).catch(err => {
-    console.error("Failed to load html2pdf packaging dynamically", err);
-    alert("Download runtime engine failed to initialize.");
+    console.error("Dynamic import error:", err);
   });
-  };
-  
+};
 
   if (loading) {
     return <div style={{ textAlign: 'center', padding: '80px', color: '#94a3b8' }}>Loading secure ledger modules...</div>
