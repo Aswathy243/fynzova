@@ -168,7 +168,7 @@ export default function Transactions() {
     <div style="font-family: 'Segoe UI', sans-serif; color: #1e293b; padding: 25px; background: #fff;">
       <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #e2e8f0;">
         <div>
-          <div style="font-size: 22px; font-weight: 800; color: #0f172a;">💰 MONEY<span style="color: #0ea5e9;">MINT</span></div>
+          <div style="font-size: 22px; font-weight: 800; color: #0f172a;">💰 FIN<span style="color: #0ea5e9;">ZOVA</span></div>
           <div style="font-size:13px;color:#64748b;margin-top:6px">${reportType === 'monthly' ? 'Monthly' : 'Annual'} Financial Report</div>
         </div>
         <div style="text-align: right; font-size: 13px; color: #64748b;">
