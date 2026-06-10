@@ -393,60 +393,62 @@ export default function Transactions() {
                   ) : (
                     /* Standard List Row View Layout Window (Made fully responsive for mobile) */
                                                      /* Standard List Row View Layout Window */
-             <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '12px', width: '100%', alignItems: 'center' }}>
+                                            /* Standard List Row View Layout Window */
+<div style={{ display: 'flex', flexDirection: 'column', width: '100%', gap: '10px' }}>
   
-                    {/* Left Side: Icon + Text Details */}
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', minWidth: 0 }}>
-                         <div style={{
-                               width: '40px',
-                               height: '40px',
-                               borderRadius: '10px',
-                               flexShrink: 0,
-                               background: t.type?.toLowerCase() === 'income' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)',
-                               display: 'flex',
-                               alignItems: 'center',
-                               justifyContent: 'center',
-                               fontSize: '18px'
-                           }}>
-                         {t.type?.toLowerCase() === 'income' ? '💰' : '🛒'}
-                       </div>
+  {/* Top Row: Icon + Category Header + Price */}
+  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '8px' }}>
     
-                <div style={{ minWidth: 0, display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                      {/* Title Header: Shows Category Name for Expenses, "Income" for Income */}
-                 <div style={{ fontWeight: '600', fontSize: '14px', color: '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                  {t.type?.toLowerCase() === 'income' ? 'Income' : (t.category || 'Expense')}
-                 </div>
+    {/* Icon & Title */}
+    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', minWidth: 0 }}>
+      <div style={{
+        width: '38px',
+        height: '38px',
+        borderRadius: '10px',
+        flexShrink: 0,
+        background: t.type?.toLowerCase() === 'income' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: '16px'
+      }}>
+        {t.type?.toLowerCase() === 'income' ? '💰' : '🛒'}
+      </div>
       
-        {/* Subtitle Details: Date + Custom Note */}
-        <div style={{ fontSize: '12px', color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
-        <span style={{ whiteSpace: 'nowrap' }}>
-          {new Date(t.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
-        </span>
-        {t.note && (
-          <span style={{ 
-            overflow: 'hidden', 
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-            color: '#64748b',
-            maxWidth: '120px'
-          }}>
-            • {t.note}
-          </span>
-        )}
+      <div style={{ fontWeight: '600', fontSize: '14px', color: '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+        {t.type?.toLowerCase() === 'income' ? 'Income' : (t.category || 'Expense')}
       </div>
     </div>
-  </div>
 
-  {/* Right Side: Price + Control Buttons Stacked Horizontally */}
-  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0, justifyContent: 'flex-end' }}>
-    <span style={{ fontSize: '15px', fontWeight: '700', color: t.type?.toLowerCase() === 'income' ? '#10b981' : '#f87171', whiteSpace: 'nowrap' }}>
+    {/* Amount/Price Display */}
+    <span style={{ fontSize: '15px', fontWeight: '700', color: t.type?.toLowerCase() === 'income' ? '#10b981' : '#f87171', whiteSpace: 'nowrap', flexShrink: 0 }}>
       {t.type?.toLowerCase() === 'income' ? '+' : '-'} ₹{Number(t.amount).toLocaleString('en-IN')}
     </span>
+
+  </div>
+
+  {/* Bottom Row: Date/Notes + Edit/Delete Buttons */}
+  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', borderTop: '1px solid #1e293b', paddingTop: '8px', marginTop: '2px', gap: '8px' }}>
     
-    <div style={{ display: 'flex', gap: '6px', flexShrink: 0 }}>
-      <button onClick={() => startEdit(t)} style={actionEditBtn} title="Edit row entry">✏️</button>
-      <button onClick={() => handleDelete(t._id)} style={actionDeleteBtn} title="Delete row entry">🗑️</button>
+    {/* Date and Custom Note */}
+    <div style={{ fontSize: '12px', color: '#94a3b8', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', minWidth: 0 }}>
+      <span>
+        {new Date(t.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
+      </span>
+      {t.note && (
+        <span style={{ color: '#64748b' }}>
+          {` • ${t.note}`}
+        </span>
+      )}
     </div>
+
+    {/* Action Control Button Icons strip */}
+    <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
+      <button onClick={() => startEdit(t)} style={{ ...actionEditBtn, padding: '6px 12px' }} title="Edit entry">✏️</button>
+      <button onClick={() => handleDelete(t._id)} style={{ ...actionDeleteBtn, padding: '6px 12px' }} title="Delete entry">🗑️</button>
+    
+    </div>
+
   </div>
 
 </div>
